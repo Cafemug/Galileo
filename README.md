@@ -13,6 +13,11 @@ Algorithm Galileo
 - reviewer에 상대방을 assign 하고 상대방은 code review를 해줍니다 (상대방도 그 문제를 풀었을 시)
 
 - review가 끝나면 merge 합니다
+## Branch 규칙
+- Branch 생성 규칙은 다음과 같습니다
+```
+issue{이슈번호}_{문제번호}
+```
 
 ## Commit 규칙
 
