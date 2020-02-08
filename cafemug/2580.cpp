@@ -1,9 +1,16 @@
 #include <iostream>
+#include <cstdlib>
 using namespace std;
 bool check_row[10][10];
 bool check_col[10][10];
 bool check_room[10][10];
 int board[10][10];
+void erase_board(int i,int j,int num){
+    check_row[i][num]= false;
+    check_col[j][num]= false;
+    check_room[3*(i/3)+(j/3)][num]=false;
+   
+}
 void fill_board(int i,int j,int num){
     check_row[i][num]= true;
     check_col[j][num]= true;
@@ -16,19 +23,35 @@ bool check_exist(int i,int j,int num){
     if(check_room[3*(i/3)+(j/3)][num]) return true;
     return false;
 }
-void go(int a, int b){
-    if(a==9 && b==9) return;
-    for(int i=a;i<9;i++){
-        for(int j=b;j<9;j++){
-            if(board[i][j]!=0) continue;
-            for(int x=1;x<10;x++){
-                if(!check_exist(i,j,x)){
-                    board[i][j]=x;
-                    fill_board(i,j,x);
-                }
+void go(int num){
+    if(num==81) {
+        for(int i=0;i<9;i++){
+            for(int j=0;j<9;j++){
+                cout<<board[i][j]<<" ";
+            }
+            cout<<"\n";
+        }
+        exit(0);
+    }
+    int i= num/9;
+    int j= num%9;
+    if(board[i][j]!=0){
+        go(num+1);
+    } 
+    else{
+        for(int x=1;x<10;x++){
+            if(!check_exist(i,j,x)){
+                board[i][j]=x;
+                fill_board(i,j,x);
+                go(num+1);
+                board[i][j]=0;
+                erase_board(i,j,x);
+
             }
         }
     }
+    
+  
 }
 
 int main(){
@@ -41,11 +64,6 @@ int main(){
             check_room[3*(i/3)+(j/3)][board[i][j]]=true;
         }
     }
-    go(0,0);
-    for(int i=0;i<9;i++){
-        for(int j=0;j<9;j++){
-            cout<<board[i][j]<<" ";
-        }
-        cout<<"\n";
-    }
+    go(0);
+    
 }
